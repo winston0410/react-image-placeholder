@@ -4,12 +4,12 @@ You can edit this file as you like.
 -}
 { name = "my-project"
 , dependencies =
-  [
-  "arrays"
+  [ "arrays"
   , "console"
   , "effect"
   , "foreign"
   , "maybe"
+  , "node-buffer"
   , "nullable"
   , "psci-support"
   ]
