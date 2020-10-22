@@ -1,6 +1,7 @@
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import ReactDOM from 'react-dom'
-import Img from '../src/index.js'
+import svgPlaceholder from '../src/index.js'
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-dom'))
@@ -18,19 +19,37 @@ afterEach(function () {
   rootContainer = null
 })
 
-describe('ImageObject component', function () {
-  it('should provide itemType and itemScope attribute', function () {
-    ReactDOM.render(<Img source={[]} src='./example.jpg'/>, rootContainer)
+describe('Svg placeholder', function () {
+  it('should provide data-uri of the original image as src', function () {
+    const Img = ({ src }) => {
+      return <img src={src}/>
+    }
+    act(() => {
+      svgPlaceholder(
+        <Img src={'./images/example.jpg'}/>
+      )
 
-    const renderedBlock = rootContainer.querySelector('figure')
+      // ReactDOM.render(<Img src={'./example.jpg'}/>, rootContainer)
+    })
 
-    expect(renderedBlock).to.have.attribute('itemScope', '')
-    expect(renderedBlock).to.have.attribute('itemType', 'https://schema.org/ImageObject')
+    const renderedBlock = rootContainer.querySelector('img')
+
+    // console.log(
+    //   ReactDOM.render(<Img src={'./example.jpg'}/>, rootContainer)
+    // )
+
+    // console.log(renderedBlock)
   })
 
-  it('should not fail if source is not provided', function () {
-    ReactDOM.render(<Img src='./example.jpg' />, rootContainer)
+  it('should not throw error if being used with HTML <img> tag', function () {
+    // ReactDOM.render(<img src='./example.jpg'/>, rootContainer)
+    //
+    // const renderedBlock = rootContainer.querySelector('img')
+    //
+    // svgPlaceholder(
+    //   renderedBlock
+    // )
 
-    const renderedBlock = rootContainer.querySelector('figure')
+    // console.log(renderedBlock)
   })
 })

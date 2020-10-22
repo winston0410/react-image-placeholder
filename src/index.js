@@ -2,17 +2,20 @@ import React from 'react'
 import {
   getSrc
 } from './utilities/_Helper.js'
-// const imagemin = require('imagemin')
-// const imageminSvgo = require('imagemin-svgo')
-// const svgToMiniDataURI = require('mini-svg-data-uri')
+const imagemin = require('imagemin')
+const imageminSvgo = require('imagemin-svgo')
+const svgToMiniDataURI = require('mini-svg-data-uri')
 
-const svgPlaceholder = (imageComponent) => {
-  console.log(imageComponent)
+const svgPlaceholder = async (imageComponent) => {
+  const imagePath = getSrc(imageComponent)
 
-  const imagePath = console.log(
-    getSrc(imageComponent)
-  )
+  const filePath = await imagemin([imagePath], {
+    plugins: [
 
+    ]
+  })
+
+  console.log(filePath)
   // const svg = ''
   //
   // const optimizedURI = `"${svgToMiniDataURI(svg)}"`
