@@ -26,7 +26,7 @@ describe('Svg placeholder', function () {
     }
     act(() => {
       svgPlaceholder(
-        <Img src={'./images/example.jpg'}/>
+        <Img src={'./images/example.svg'}/>
       )
 
       // ReactDOM.render(<Img src={'./example.jpg'}/>, rootContainer)

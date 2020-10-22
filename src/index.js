@@ -1,28 +1,30 @@
 import React from 'react'
 import {
-  getSrc
+  getSrc,
+  setSrc
 } from './utilities/_Helper.js'
 const imagemin = require('imagemin')
 const imageminSvgo = require('imagemin-svgo')
 const svgToMiniDataURI = require('mini-svg-data-uri')
 
-const svgPlaceholder = async (imageComponent) => {
+const defaultOptions = { svgOptions: {} }
+
+const svgPlaceholder = async (imageComponent, { svgOptions } = defaultOptions) => {
   const imagePath = getSrc(imageComponent)
 
   const filePath = await imagemin([imagePath], {
     plugins: [
-
+      imageminSvgo(svgOptions)
     ]
   })
 
-  console.log(filePath)
-  // const svg = ''
-  //
-  // const optimizedURI = `"${svgToMiniDataURI(svg)}"`
-  //
-  // const transformedComponent = ''
-  //
-  // return transformedComponent
+  const svg = filePath[0].data.toString('utf8')
+
+  const optimizedURI = `"${svgToMiniDataURI(svg)}"`
+
+  const transformedComponent = setSrc(imageComponent)(optimizedURI)
+
+  return transformedComponent
 }
 
 export default svgPlaceholder
