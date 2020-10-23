@@ -24,11 +24,8 @@ getSrc obj = obj # getProps # nullToMaybe # getSrc'
   getSrc' { src: Just (x), "data-src": Just (y) } = y
 
 -- setSrc :: { props :: { src :: String } } -> { props :: { src :: String } }
-setSrc obj value = obj { props = { src: value } }
+setSrc obj value = obj
+  where
+  setDataSrc' obj' value' = obj
 
-testRecord = {
-  props: {
-    src: "Hello",
-    otherKey: "foo"
-  }
-}
+  setSrc' obj' value' = obj
