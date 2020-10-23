@@ -37,3 +37,5 @@ getSrc obj = obj # getProps # nullToMaybe # getSrc'
   getSrc' { src: Nothing, "data-src": Just (x) } = x
   getSrc' { src: Nothing, "data-src": Nothing } = ""
   getSrc' { src: Just (x), "data-src": Just (y) } = y
+
+setSrc obj value = obj { props { src = value } }

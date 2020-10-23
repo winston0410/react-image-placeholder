@@ -1,7 +1,7 @@
 import React from 'react'
 import {
-  getSrc
-  // setSrc
+  getSrc,
+  setSrc
 } from './utilities/_Helper.js'
 import sharp from 'sharp'
 const imagemin = require('imagemin')

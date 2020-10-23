@@ -317,6 +317,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@blackblock/common-utilities@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@blackblock/common-utilities/-/common-utilities-0.2.0.tgz#47d0e9fe9ff9d478d464db49eac117f855a0158e"
+  integrity sha512-FPYK8XilfQ8u+YEcAL/7qtdET2R8bv+9QFN+tiB0DIawt40d5D+p7QWaiH9E4MPMyLZn+MW4t0/2klYyuxAAyw==
+
 "@eslint/eslintrc@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.1.3.tgz#7d1a2b2358552cc04834c0979bd4275362e37085"
