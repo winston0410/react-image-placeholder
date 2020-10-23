@@ -3,43 +3,48 @@ import {
   getSrc
   // setSrc
 } from './utilities/_Helper.js'
+import sharp from 'sharp'
 const imagemin = require('imagemin')
 const imageminSvgo = require('imagemin-svgo')
 const svgToMiniDataURI = require('mini-svg-data-uri')
-const potrace = require('potrace')
-const trace = new potrace.Potrace()
 
-const defaultOptions = { svgOptions: {} }
+const defaultOptions = {
+  imagemin: {
+    plugins: []
+  },
+  sharp: {
+    resizeOption: {
 
-const svgPlaceholder = async (imageComponent, { svgOptions } = defaultOptions) => {
+    }
+  }
+}
+
+const svgPlaceholder = ({ imagemin, sharp } = defaultOptions) => async (imageComponent) => {
   const imagePath = getSrc(imageComponent)
 
-  trace.loadImage(imagePath, function (err) {
-    if (err) throw err
+  const resizedImage = sharp(imagePath)
+    .resize(sharp.resizeOption)
+    .toBuffer()
 
-    trace.getSVG() // returns SVG document contents
-
-    console.log(
-      trace.getSVG()
-    )
-
-    trace.getPathTag() // will return just <path> tag
-    trace.getSymbol('traced-image') // will return <symbol> tag with given ID
+  const minifiedImage = imagemin.buffer(resizedImage, {
+    plugins: imagemin.plugins
   })
 
-  // const filePath = await imagemin([imagePath], {
-  //   plugins: [
-  //     imageminSvgo(svgOptions)
-  //   ]
-  // })
+  // Convert image to toString
+
+  // Convert string/buffer to base64
+
+  // setsrc for imageComponent
+
+  // const transformedComponent = setSrc(imageComponent)(optimizedURI)
+
+  // return transformedComponent
+
   //
   // const svg = filePath[0].data.toString('utf8')
   //
   // const optimizedURI = `"${svgToMiniDataURI(svg)}"`
   //
-  // const transformedComponent = setSrc(imageComponent)(optimizedURI)
-
-  // return transformedComponent
 }
 
 export default svgPlaceholder
