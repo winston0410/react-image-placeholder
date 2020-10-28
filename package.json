@@ -87,9 +87,8 @@
     "rollup-plugin-node-polyfills": "0.2.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "rollup-plugin-terser": "7.0.2",
-    "sharp": "^0.26.2"
+    "sharp": "^0.26.2",
+    "use-ssr": "^1.0.23"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
