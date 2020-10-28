@@ -23,9 +23,12 @@ getSrc obj = obj # getProps # nullToMaybe # getSrc'
   getSrc' { src: Nothing, "data-src": Nothing } = ""
   getSrc' { src: Just (x), "data-src": Just (y) } = y
 
--- setSrc :: { props :: { src :: String } } -> { props :: { src :: String } }
-setSrc obj value = obj
+setSrc :: String -> String -> { props :: { src :: String, dataSrc :: String } } -> { props :: { src :: String, dataSrc :: String } }
+-- setSrc srcValue dataSrcValue obj = obj # (setSrc' srcValue) # (setDataSrc' dataSrcValue)
+setSrc srcValue dataSrcValue obj = obj # (setSrc' srcValue)
   where
-  setDataSrc' obj' value' = obj
+  setDataSrc' :: String -> { props :: { src :: String, dataSrc :: String }} -> { props :: { src :: String, dataSrc :: String }}
+  setDataSrc' value' obj' = obj' { props { dataSrc = value' } }
 
-  setSrc' obj' value' = obj
+  setSrc' :: String -> { props :: { src :: String, dataSrc :: String }} -> { props :: { src :: String, dataSrc :: String }}
+  setSrc' value' obj' = obj' { props { src = value' } }

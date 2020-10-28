@@ -11,7 +11,7 @@ const {
 
 export default [{
   input: './src/index.js',
-  external: ['react'],
+  external: ['react', 'sharp'],
   output: [{
     exports: 'auto',
     file: 'dist/esm/index.mjs.js',

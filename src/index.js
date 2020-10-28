@@ -1,50 +1,109 @@
 import React from 'react'
+
+import { useAsync } from 'react-async'
+
 import {
   getSrc,
   setSrc
 } from './utilities/_Helper.js'
-import sharp from 'sharp'
-const imagemin = require('imagemin')
-const imageminSvgo = require('imagemin-svgo')
-const svgToMiniDataURI = require('mini-svg-data-uri')
+
+import {
+  getDataURI as _getDataURI
+} from './utilities/datauri.js'
+
+import {
+  compressImage
+} from './utilities/compress.js'
+
+import {
+  resizeImage
+} from './utilities/resize.js'
+
+import {
+  getMetadata
+} from './utilities/metadata.js'
+
+import {
+  defaultWhenEmpty
+} from '@blackblock/common-utilities'
+
+const imageminMozjpeg = require('imagemin-mozjpeg')
+const imageminPngquant = require('imagemin-pngquant')
 
 const defaultOptions = {
   imagemin: {
-    plugins: []
+    plugins: [
+      imageminMozjpeg(),
+      imageminPngquant()
+    ]
   },
   sharp: {
-    resizeOption: {
-
-    }
+    resizeRatio: 0.05
   }
+  // resizeCallback: '',
+  // compressionCallback: ''
 }
 
-const svgPlaceholder = ({ imagemin, sharp } = defaultOptions) => async (imageComponent) => {
-  const imagePath = getSrc(imageComponent)
-
-  const resizedImage = sharp(imagePath)
-    .resize(sharp.resizeOption)
-    .toBuffer()
-
-  const minifiedImage = imagemin.buffer(resizedImage, {
-    plugins: imagemin.plugins
+const getDataURI = async ({ imagePath, sharp, imagemin }) => {
+  const metadata = await getMetadata({
+    imagePath: imagePath
   })
 
-  // Convert image to toString
-
-  // Convert string/buffer to base64
-
-  // setsrc for imageComponent
-
-  // const transformedComponent = setSrc(imageComponent)(optimizedURI)
-
-  // return transformedComponent
-
+  const resizedBuffer = await resizeImage({
+    imagePath: imagePath,
+    resizeRatio: sharp.resizeRatio,
+    metadata: metadata
+  })
   //
-  // const svg = filePath[0].data.toString('utf8')
-  //
-  // const optimizedURI = `"${svgToMiniDataURI(svg)}"`
-  //
+  console.log(resizedBuffer)
+
+  const compressedBuffer = await compressImage({
+    buffer: resizedBuffer,
+    plugins: []
+  })
+
+  console.log(compressedBuffer)
+
+  const dataURI = getDataURI({
+    format: metadata.format,
+    buffer: compressedBuffer
+  })
 }
 
-export default svgPlaceholder
+const setImagePlaceholder = ({ imagemin, sharp, resizeCallback, compressionCallback } = defaultOptions) => (imageComponent) => {
+  const imagePath = getSrc(imageComponent)
+  const { data, error, isPending } = useAsync({ promiseFn: getDataURI, imagePath: imagePath, sharp: sharp, imagemin: imagemin })
+
+  console.log(data)
+
+  // const compressImage = defaultWhenEmpty(_compressImage)(compressionCallback)
+  //
+  // const resizeImage = defaultWhenEmpty(_resizeImage)(resizeCallback)
+
+  // const dataURI = getDataURI({
+  //   imagePath: imagePath,
+  //   sharp: {
+  //     resizeRatio: 0.05
+  //   },
+  //   imagemin: {
+  //     plugins: []
+  //   }
+  //
+  // })
+
+  const transformedComponent = {
+    ...imageComponent,
+    props: {
+      src: data,
+      dataSrc: imagePath
+    }
+  }
+
+  // To fix: async in React
+
+  // setSrc(minifiedDataUri)(imagePath)(imageComponent)
+
+  return transformedComponent
+}
+
+export default setImagePlaceholder

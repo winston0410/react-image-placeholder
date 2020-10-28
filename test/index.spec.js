@@ -1,7 +1,7 @@
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import ReactDOM from 'react-dom'
-import svgPlaceholder from '../src/index.js'
+import setImagePlaceholder from '../src/index.js'
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-dom'))
@@ -21,39 +21,42 @@ afterEach(function () {
 
 describe('Svg placeholder', function () {
   it('should provide data-uri of the original image as src', function () {
-    const Img = ({ src }) => {
-      return <img src={src}/>
+    const imagePath = './images/example.jpg'
+    const Img = ({ src, dataSrc }) => {
+      return <img src={src} data-src={dataSrc}/>
     }
-    act(() => {
-      // svgPlaceholder(
-      //   <Img src={'./images/example.svg'}/>
-      // )
 
-      svgPlaceholder(
-        <Img src={'./images/example.jpg'}/>
-      )
+    const imgWithPlaceholder = setImagePlaceholder()(
+      <Img src={imagePath} />
+    )
 
-      // ReactDOM.render(<Img src={'./example.jpg'}/>, rootContainer)
-    })
+    // const Test = () => <Img />
 
-    const renderedBlock = rootContainer.querySelector('img')
+    // const test2 = {
+    //   ...test,
+    //   props: {
+    //     src: 'hello'
+    //   }
+    // }
 
-    // console.log(
-    //   ReactDOM.render(<Img src={'./example.jpg'}/>, rootContainer)
-    // )
+    // console.log(imgWithPlaceholder)
+    //
+    // console.log(test2)
 
-    // console.log(renderedBlock)
+    //
+    // console.log(<Img />)
+    //
+    console.log(imgWithPlaceholder)
+
+    ReactDOM.render(imgWithPlaceholder, rootContainer)
+
+    // const renderedBlock = rootContainer.querySelector('img')
+    //
+    // expect(renderedBlock).to.have.attribute('src')
+    // expect(renderedBlock).to.have.attribute('data-src', imagePath)
   })
 
   it('should not throw error if being used with HTML <img> tag', function () {
-    // ReactDOM.render(<img src='./example.jpg'/>, rootContainer)
-    //
-    // const renderedBlock = rootContainer.querySelector('img')
-    //
-    // svgPlaceholder(
-    //   renderedBlock
-    // )
 
-    // console.log(renderedBlock)
   })
 })
