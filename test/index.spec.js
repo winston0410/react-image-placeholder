@@ -1,7 +1,9 @@
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import ReactDOM from 'react-dom'
-import setImagePlaceholder from '../src/index.js'
+import {
+  WithPlaceholder
+} from '../src/index.js'
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-dom'))
