@@ -1,12 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import useSSR from 'use-ssr'
+import { useSSE } from 'use-sse'
 
 import {
-  getSrc,
-  setSrc
-} from '../utilities/_Helper.js'
-
-import {
-  getDataURI as _getDataURI
+  getDataURI
 } from '../utilities/datauri.js'
 
 import {
@@ -28,21 +25,11 @@ import {
 const imageminMozjpeg = require('imagemin-mozjpeg')
 const imageminPngquant = require('imagemin-pngquant')
 
-const defaultOptions = {
-  imagemin: {
-    plugins: [
-      imageminMozjpeg(),
-      imageminPngquant()
-    ]
-  },
-  sharp: {
-    resizeRatio: 0.05
-  }
-  // resizeCallback: '',
-  // compressionCallback: ''
-}
+const getPlaceholder = ({ imagePath, sharp, imagemin }) => async (setFn, stopFn) => {
+  // const compressImage = defaultWhenEmpty(_compressImage)(compressionCallback)
+  //
+  // const resizeImage = defaultWhenEmpty(_resizeImage)(resizeCallback)
 
-const getDataURI = async ({ imagePath, sharp, imagemin }) => {
   const metadata = await getMetadata({
     imagePath: imagePath
   })
@@ -62,35 +49,40 @@ const getDataURI = async ({ imagePath, sharp, imagemin }) => {
     format: metadata.format,
     buffer: compressedBuffer
   })
+
+  setFn(dataURI)
+  stopFn(true)
 }
 
-const withPlaceholder = (Component) => ({ imagemin, sharp, resizeCallback, compressionCallback, ...rest } = defaultOptions) => {
-  const imagePath = getSrc(Component)
+// imagemin, sharp, resizeCallback, compressionCallback,
+const defaultOptions = {
+  imagemin: {
+    plugins: [
 
-  // const compressImage = defaultWhenEmpty(_compressImage)(compressionCallback)
-  //
-  // const resizeImage = defaultWhenEmpty(_resizeImage)(resizeCallback)
+    ]
+  },
+  sharp: {
+    resizeRatio: 0.01
+  }
+}
 
-  // const dataURI = getDataURI({
-  //   imagePath: imagePath,
-  //   sharp: {
-  //     resizeRatio: 0.05
-  //   },
-  //   imagemin: {
-  //     plugins: []
-  //   }
-  //
-  // })
+const withPlaceholder = (Component) => ({ src, placeholderSetting = defaultOptions, ...attr }) => {
+  const [placeholder, setPlaceholder] = useState('')
+  const [stopSignal, setStopSignal] = useState(false)
+  const { isServer } = useSSR()
 
-  // const transformedComponent = {
-  //   ...Component,
-  //   props: {
-  //     src: data,
-  //     dataSrc: imagePath
-  //   }
-  // }
-  //
-  // return transformedComponent
+  if (isServer) {
+    if (!stopSignal) {
+      getPlaceholder({
+        imagePath: src,
+        ...placeholderSetting
+      })(setPlaceholder, setStopSignal)
+    }
+  }
+
+  if (stopSignal) {
+    return <Component src={placeholder} data-src={src} {...attr}/>
+  }
 }
 
 export default withPlaceholder
