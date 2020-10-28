@@ -5255,6 +5255,11 @@ url-to-options@^1.0.1:
   resolved "https://registry.yarnpkg.com/url-to-options/-/url-to-options-1.0.1.tgz#1505a03a289a48cbd7a434efbaeec5055f5633a9"
   integrity sha1-FQWgOiiaSMvXpDTvuu7FBV9WM6k=
 
+use-sse@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/use-sse/-/use-sse-2.0.0.tgz#6d336a71dfb7d71f321001a6eb8f0b63eb441ca9"
+  integrity sha512-ptEgkYxxjXbHbJyzfBDCLCsHLO1ykLBxOAUaNqz5KwDkBuvAQq0vFPSiBChObg8e0tYBxO3LXy6LHkhvwo/66w==
+
 use-ssr@^1.0.23:
   version "1.0.23"
   resolved "https://registry.yarnpkg.com/use-ssr/-/use-ssr-1.0.23.tgz#3bde1e10cd01b3b61ab6386d7cddb72e74828bf8"
