@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { useAsync } from 'react-async'
-
 import {
   getSrc,
   setSrc
@@ -72,9 +70,6 @@ const getDataURI = async ({ imagePath, sharp, imagemin }) => {
 
 const setImagePlaceholder = ({ imagemin, sharp, resizeCallback, compressionCallback } = defaultOptions) => (imageComponent) => {
   const imagePath = getSrc(imageComponent)
-  const { data, error, isPending } = useAsync({ promiseFn: getDataURI, imagePath: imagePath, sharp: sharp, imagemin: imagemin })
-
-  console.log(data)
 
   // const compressImage = defaultWhenEmpty(_compressImage)(compressionCallback)
   //
@@ -91,19 +86,15 @@ const setImagePlaceholder = ({ imagemin, sharp, resizeCallback, compressionCallb
   //
   // })
 
-  const transformedComponent = {
-    ...imageComponent,
-    props: {
-      src: data,
-      dataSrc: imagePath
-    }
-  }
-
-  // To fix: async in React
-
-  // setSrc(minifiedDataUri)(imagePath)(imageComponent)
-
-  return transformedComponent
+  // const transformedComponent = {
+  //   ...imageComponent,
+  //   props: {
+  //     src: data,
+  //     dataSrc: imagePath
+  //   }
+  // }
+  //
+  // return transformedComponent
 }
 
 export default setImagePlaceholder

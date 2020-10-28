@@ -45,6 +45,7 @@
     "sharp": "^0.26.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-export-default-from": "^7.12.1",
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "@babel/plugin-transform-react-jsx": "^7.12.1",
@@ -80,7 +81,6 @@
     "mini-svg-data-uri": "^1.2.3",
     "mocha": "8.2.0",
     "nyc": "15.1.0",
-    "potrace": "^2.1.8",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "rollup": "2.32.1",
@@ -90,6 +90,6 @@
     "sharp": "^0.26.2"
   },
   "dependencies": {
-    "react-async": "^10.0.1"
+
   }
 }
